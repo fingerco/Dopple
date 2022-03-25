@@ -1,7 +1,7 @@
 defprotocol Dopple.Protocols.Receipt do
-  @spec id(Receipt) :: atom() | binary()
+  @spec id(__MODULE__.t) :: atom() | binary()
   def id(recpt)
 
-  @spec payload(Receipt) :: any
+  @spec payload(__MODULE__.t) :: any
   def payload(recpt)
 end
