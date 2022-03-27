@@ -12,3 +12,7 @@ jobs:
           experimental-otp: true
       - run: mix deps.get
       - run: mix test
+      - if: github.ref_type == 'tag'
+        run: mix hex.build
+      - if: github.ref_type == 'tag'
+        run: mix hex.publish --yes
