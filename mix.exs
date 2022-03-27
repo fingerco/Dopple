@@ -9,6 +9,7 @@ defmodule Dopple.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),
+      dialyzer: dialyzer(),
       name: "Dopple",
       description: "A library that pings services and measures the results",
       source_url: "https://github.com/polymorfiq-tools/dopple"
@@ -28,7 +29,8 @@ defmodule Dopple.MixProject do
       {:gen_stage, "~> 1.1"},
       {:uuid, "~> 1.1"},
       {:httpoison, "~> 1.8"},
-      {:mox, "~> 0.5", only: [:test, :dev]}
+      {:mox, "~> 0.5", only: [:test, :dev]},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -40,6 +42,13 @@ defmodule Dopple.MixProject do
       files: ~w(lib .formatter.exs mix.exs README* LICENSE* CHANGELOG*),
       licenses: ["AGPL-3.0-or-later"],
       links: %{"GitHub" => "https://github.com/polymorfiq-tools/dopple"}
+    ]
+  end
+
+  defp dialyzer do
+    [
+      plt_core_path: "priv/plts",
+      plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
     ]
   end
 end
