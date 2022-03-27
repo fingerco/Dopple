@@ -1,6 +1,9 @@
 defmodule Dopple.Receipt.Empty do
-  alias Dopple.Receipt
+  @moduledoc """
+    A receipt that describes an empty response
+  """
 
+  alias Dopple.Receipt
   defstruct id: UUID.uuid4()
 
   def new() do

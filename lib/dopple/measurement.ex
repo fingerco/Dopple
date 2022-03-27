@@ -1,4 +1,8 @@
 defprotocol Dopple.Measurement do
+  @moduledoc """
+    Describes a measurement that should be retrieved from a set of targets on a given a set of schedules
+  """
+
   @spec add_schedule(__MODULE__.t(), Schedule.t()) :: {:ok, __MODULE__.t()} | {:error, any}
   def add_schedule(measurement, schedule)
 

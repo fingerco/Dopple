@@ -1,4 +1,8 @@
 defprotocol Dopple.Aggregator do
+  @moduledoc """
+    A mechanism that listens to a set of measurements in order to act on the results
+  """
+
   @spec add_measurement(__MODULE__.t(), Measurement.t()) :: {:ok, __MODULE__.t()} | {:error, any}
   def add_measurement(agg, measurement)
 

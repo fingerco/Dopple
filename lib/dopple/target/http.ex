@@ -1,6 +1,9 @@
 defmodule Dopple.Target.Http do
-  alias Dopple.{Target, Receipt}
+  @moduledoc """
+    A resource that represents an HTTP endpoint
+  """
 
+  alias Dopple.{Target, Receipt}
   @enforce_keys [:url, :method]
   defstruct [:url, :method, params: %{}, body: "", headers: [], options: []]
 

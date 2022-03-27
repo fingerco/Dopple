@@ -1,4 +1,8 @@
 defmodule Dopple.Schedule.Event do
+  @moduledoc """
+    A schedule that can be kicked off manually by enqueing an event
+  """
+
   use GenStage
   alias Dopple.Schedule
 

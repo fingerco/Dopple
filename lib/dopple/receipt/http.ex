@@ -1,6 +1,9 @@
 defmodule Dopple.Receipt.Http do
-  alias Dopple.Receipt
+  @moduledoc """
+    A receipt that describes an HTTP rsponse
+  """
 
+  alias Dopple.Receipt
   @enforce_keys [:status, :body]
   defstruct [:status, :body, id: UUID.uuid4()]
 

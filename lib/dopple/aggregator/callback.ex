@@ -1,4 +1,8 @@
 defmodule Dopple.Aggregator.Callback do
+  @moduledoc """
+    An aggregator that takes the results of a measurement and performs a callback function on them
+  """
+
   use GenStage
   alias Dopple.{Measurement}
 

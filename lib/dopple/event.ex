@@ -1,4 +1,8 @@
 defprotocol Dopple.Event do
+  @moduledoc """
+    Describes the event that caused the system to ping a target
+  """
+
   @spec id(__MODULE__.t()) :: atom() | binary()
   def id(event)
 

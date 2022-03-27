@@ -1,4 +1,7 @@
 defmodule Dopple.Measurement.Property do
+  @moduledoc """
+    A measurement that retrieves a property of a response object
+  """
   use GenStage
   alias Dopple.{Schedule, Target, Receipt}
 
@@ -28,15 +31,15 @@ defmodule Dopple.Measurement.Property do
   end
 
   def handle_events(events, _from, %{targets: targets, property: prop} = state) do
+    event_targets = Enum.zip(events, targets)
+
     responses =
-      Enum.flat_map(events, fn event ->
-        targets
-        |> Enum.map(fn target ->
-          case Target.respond_to(target, event) do
-            {:ok, receipt} -> Map.fetch(Receipt.payload(receipt), prop)
-            {:error, err} -> {:error, err}
-          end
-        end)
+      event_targets
+      |> Enum.map(fn {event, target} ->
+        case Target.respond_to(target, event) do
+          {:ok, receipt} -> Map.fetch(Receipt.payload(receipt), prop)
+          {:error, err} -> {:error, err}
+        end
       end)
 
     {:noreply, responses, state}
