@@ -1,7 +1,4 @@
 defprotocol Dopple.Measurement do
-  alias Dopple.Schedule
-  alias Dopple.Target
-
   @spec add_schedule(__MODULE__.t, Schedule.t) :: {:ok, __MODULE__.t} | {:error, any}
   def add_schedule(measurement, schedule)
 

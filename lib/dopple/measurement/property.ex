@@ -1,9 +1,10 @@
 defmodule Dopple.Measurement.Property do
   use GenStage
-  alias Dopple.{Schedule, Target, Receipt, Measurement}
+  alias Dopple.{Schedule, Target, Receipt}
 
   @enforce_keys [:stage]
   defstruct     [:stage, schedules: [], targets: [], id: UUID.uuid4]
+  @type t() :: %__MODULE__{stage: GenStage.stage()}
 
   def new(property) do
     {:ok, pid} = start_link(property)
@@ -29,7 +30,7 @@ defmodule Dopple.Measurement.Property do
     responses = Enum.flat_map(events, fn event ->
       targets |> Enum.map(fn target ->
         case Target.respond_to(target, event) do
-          {:ok, receipt} -> {:ok, Map.fetch!(Receipt.payload(receipt), prop)}
+          {:ok, receipt} -> Map.fetch(Receipt.payload(receipt), prop)
           {:error, err} -> {:error, err}
         end
       end)
@@ -37,21 +38,24 @@ defmodule Dopple.Measurement.Property do
 
     {:noreply, responses, state}
   end
+end
 
-  defimpl Measurement, for: __MODULE__ do
-    def add_schedule(m, schedule) do
-      {:ok, producer} = Schedule.producer(schedule)
-      GenStage.sync_subscribe(m.stage, to: producer)
+defimpl Dopple.Measurement, for: Dopple.Measurement.Property do
+  alias Dopple.{Schedule}
 
-      {:ok, %{m | schedules: [schedule | m.schedules]}}
+  def add_schedule(m, schedule) do
+    {:ok, producer} = Schedule.producer(schedule)
+
+    case GenStage.sync_subscribe(m.stage, to: producer) do
+      {:ok, _} -> {:ok, %{m | schedules: [schedule | m.schedules]}}
+      {:error, err} -> {:error, err}
     end
-
-    def add_target(m, target) do
-      GenServer.cast(m.stage, {:target, target})
-
-      {:ok, %{m | targets: [target | m.targets]}}
-    end
-
-    def producer(m), do: {:ok, m.stage}
   end
+
+  def add_target(m, target) do
+    GenServer.cast(m.stage, {:target, target})
+    {:ok, %{m | targets: [target | m.targets]}}
+  end
+
+  def producer(m), do: {:ok, m.stage}
 end

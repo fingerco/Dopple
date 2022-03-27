@@ -1,6 +1,4 @@
 defprotocol Dopple.Aggregator do
-  alias Dopple.Measurement
-
   @spec add_measurement(__MODULE__.t, Measurement.t) :: {:ok, __MODULE__.t} | {:error, any}
   def add_measurement(agg, measurement)
 
