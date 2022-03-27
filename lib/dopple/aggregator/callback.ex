@@ -4,7 +4,7 @@ defmodule Dopple.Aggregator.Callback do
   """
 
   use GenStage
-  alias Dopple.{Measurement}
+  alias Dopple.Measurement
 
   @enforce_keys [:stage]
   defstruct [:stage, measurements: []]

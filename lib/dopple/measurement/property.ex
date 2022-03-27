@@ -3,7 +3,7 @@ defmodule Dopple.Measurement.Property do
     A measurement that retrieves a property of a response object
   """
   use GenStage
-  alias Dopple.{Schedule, Target, Receipt}
+  alias Dopple.{Receipt, Schedule, Target}
 
   @enforce_keys [:stage]
   defstruct [:stage, schedules: [], targets: [], id: UUID.uuid4()]
@@ -47,7 +47,7 @@ defmodule Dopple.Measurement.Property do
 end
 
 defimpl Dopple.Measurement, for: Dopple.Measurement.Property do
-  alias Dopple.{Schedule}
+  alias Dopple.Schedule
 
   def add_schedule(m, schedule) do
     {:ok, producer} = Schedule.producer(schedule)

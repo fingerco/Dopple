@@ -9,12 +9,12 @@ defmodule Dopple.Schedule.Event do
   @enforce_keys [:stage]
   defstruct [:stage, id: UUID.uuid4()]
 
-  def new() do
+  def new do
     {:ok, pid} = start_link()
     %__MODULE__{stage: pid}
   end
 
-  def start_link() do
+  def start_link do
     GenStage.start_link(__MODULE__, [])
   end
 

@@ -1,7 +1,7 @@
 defmodule DoppleTest do
   use ExUnit.Case
   doctest Dopple
-  alias Dopple.{Measurement, Aggregator, Schedule, Target}
+  alias Dopple.{Aggregator, Measurement, Schedule, Target}
 
   test "can handle basic event schedule" do
     m = Measurement.Property.new(:status)
