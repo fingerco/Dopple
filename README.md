@@ -1,5 +1,5 @@
 # Dopple
-[![Hex.pm](https://img.shields.io/hexpm/v/oembed.svg?style=flat-square)](https://hex.pm/packages/dopple)
+[![Hex.pm](https://img.shields.io/hexpm/v/dopple.svg?style=flat-square)](https://hex.pm/packages/dopple)
 
 **TODO: Add description**
 
