@@ -1,6 +1,6 @@
-defmodule Dopple.Aggregators.CallbackAggregator do
+defmodule Dopple.Aggregator.Callback do
   use GenStage
-  alias Dopple.Protocols.Measurement
+  alias Dopple.{Measurement, Aggregator}
 
   @enforce_keys [:stage]
   defstruct     [:stage, measurements: []]
@@ -26,7 +26,7 @@ defmodule Dopple.Aggregators.CallbackAggregator do
     {:noreply, [], on_resp}
   end
 
-  defimpl Dopple.Protocols.Aggregator, for: __MODULE__ do
+  defimpl Aggregator, for: __MODULE__ do
     def add_measurement(agg, m) do
       {:ok, producer} = Measurement.producer(m)
       GenStage.sync_subscribe(agg.stage, to: producer)

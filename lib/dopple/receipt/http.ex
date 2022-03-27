@@ -1,5 +1,6 @@
-defmodule Dopple.Receipts.HttpReceipt do
-  alias Dopple.Protocols.Receipt
+defmodule Dopple.Receipt.Http do
+  alias Dopple.Receipt
+
   @enforce_keys [:status, :body]
   defstruct     [:status, :body, id: UUID.uuid4]
 

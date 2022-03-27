@@ -1,5 +1,6 @@
-defmodule Dopple.Receipts.EmptyReceipt do
-  alias Dopple.Protocols.Receipt
+defmodule Dopple.Receipt.Empty do
+  alias Dopple.Receipt
+
   defstruct [id: UUID.uuid4]
 
   def new() do

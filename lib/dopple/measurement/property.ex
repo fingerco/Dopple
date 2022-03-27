@@ -1,8 +1,6 @@
-defmodule Dopple.Measurements.PropertyMeasurement do
+defmodule Dopple.Measurement.Property do
   use GenStage
-  alias Dopple.Protocols.Schedule
-  alias Dopple.Protocols.Target
-  alias Dopple.Protocols.Receipt
+  alias Dopple.{Schedule, Target, Receipt, Measurement}
 
   @enforce_keys [:stage]
   defstruct     [:stage, schedules: [], targets: [], id: UUID.uuid4]
@@ -40,7 +38,7 @@ defmodule Dopple.Measurements.PropertyMeasurement do
     {:noreply, responses, state}
   end
 
-  defimpl Dopple.Protocols.Measurement, for: __MODULE__ do
+  defimpl Measurement, for: __MODULE__ do
     def add_schedule(m, schedule) do
       {:ok, producer} = Schedule.producer(schedule)
       GenStage.sync_subscribe(m.stage, to: producer)

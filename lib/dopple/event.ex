@@ -1,4 +1,4 @@
-defprotocol Dopple.Protocols.Event do
+defprotocol Dopple.Event do
   @spec id(__MODULE__.t) :: atom() | binary()
   def id(event)
 

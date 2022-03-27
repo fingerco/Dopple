@@ -1,6 +1,5 @@
-defmodule Dopple.Targets.HttpTarget do
-  alias Dopple.Protocols.Target
-  alias Dopple.Receipts.HttpReceipt
+defmodule Dopple.Target.Http do
+  alias Dopple.{Target, Receipt}
 
   @enforce_keys [:url, :method]
   defstruct     [:url, :method, params: %{}, body: "", headers: [], options: []]
@@ -20,7 +19,7 @@ defmodule Dopple.Targets.HttpTarget do
       )
 
       case http_resp do
-        {:ok, resp} -> {:ok, HttpReceipt.new(status: resp.status_code, body: resp.body)}
+        {:ok, resp} -> {:ok, Receipt.Http.new(status: resp.status_code, body: resp.body)}
         _ -> http_resp
       end
     end

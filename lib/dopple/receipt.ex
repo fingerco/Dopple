@@ -1,4 +1,4 @@
-defprotocol Dopple.Protocols.Receipt do
+defprotocol Dopple.Receipt do
   @spec id(__MODULE__.t) :: atom() | binary()
   def id(recpt)
 

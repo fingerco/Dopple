@@ -1,6 +1,6 @@
-defmodule Dopple.Schedules.EventSchedule do
+defmodule Dopple.Schedule.Event do
   use GenStage
-  alias Dopple.Protocols.Schedule
+  alias Dopple.Schedule
 
   @enforce_keys [:stage]
   defstruct     [:stage, id: UUID.uuid4]
