@@ -7,9 +7,9 @@ on:
 jobs:
   test:
     strategy:
-    matrix:
-      elixir: [1.13.2]
-      otp: [24]
+      matrix:
+        elixir: [1.13.2]
+        otp: [24]
 
     runs-on: ubuntu-latest
     steps:
