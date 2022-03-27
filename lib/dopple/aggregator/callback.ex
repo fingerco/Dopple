@@ -3,7 +3,7 @@ defmodule Dopple.Aggregator.Callback do
   alias Dopple.{Measurement}
 
   @enforce_keys [:stage]
-  defstruct     [:stage, measurements: []]
+  defstruct [:stage, measurements: []]
 
   def new(on_resp) do
     {:ok, pid} = start_link(on_resp)
@@ -19,7 +19,8 @@ defmodule Dopple.Aggregator.Callback do
   end
 
   def handle_events(events, _from, on_resp) do
-    events |> Enum.each(fn evt ->
+    events
+    |> Enum.each(fn evt ->
       on_resp.(evt)
     end)
 
@@ -31,8 +32,8 @@ defimpl Dopple.Aggregator, for: Dopple.Aggregator.Callback do
   alias Dopple.Measurement
 
   def add_measurement(agg, m) do
-    with  {:ok, producer} <- Measurement.producer(m),
-          {:ok, _} <- GenStage.sync_subscribe(agg.stage, to: producer) do
+    with {:ok, producer} <- Measurement.producer(m),
+         {:ok, _} <- GenStage.sync_subscribe(agg.stage, to: producer) do
       {:ok, %{agg | measurements: [m | agg.measurements]}}
     end
   end

@@ -3,7 +3,7 @@ defmodule Dopple.Schedule.Event do
   alias Dopple.Schedule
 
   @enforce_keys [:stage]
-  defstruct     [:stage, id: UUID.uuid4]
+  defstruct [:stage, id: UUID.uuid4()]
 
   def new() do
     {:ok, pid} = start_link()
@@ -30,12 +30,13 @@ defmodule Dopple.Schedule.Event do
   end
 
   def handle_demand(incoming, {queue, demand}) do
-    {events, queue} = Enum.reduce(0..incoming, {[], queue}, fn _, {events, queue} ->
-      case :queue.out(queue) do
-        {{:value, val}, new_queue} -> {events ++ [val], new_queue}
-        {:empty, _} -> {events, queue}
-      end
-    end)
+    {events, queue} =
+      Enum.reduce(0..incoming, {[], queue}, fn _, {events, queue} ->
+        case :queue.out(queue) do
+          {{:value, val}, new_queue} -> {events ++ [val], new_queue}
+          {:empty, _} -> {events, queue}
+        end
+      end)
 
     unsatisfied = incoming - Enum.count(events)
     {:noreply, events, {queue, demand + unsatisfied}}

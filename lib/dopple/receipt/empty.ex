@@ -1,7 +1,7 @@
 defmodule Dopple.Receipt.Empty do
   alias Dopple.Receipt
 
-  defstruct [id: UUID.uuid4]
+  defstruct id: UUID.uuid4()
 
   def new() do
     %__MODULE__{}

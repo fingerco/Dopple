@@ -1,10 +1,10 @@
 defprotocol Dopple.Event do
-  @spec id(__MODULE__.t) :: atom() | binary()
+  @spec id(__MODULE__.t()) :: atom() | binary()
   def id(event)
 
-  @spec type(__MODULE__.t) :: atom()
+  @spec type(__MODULE__.t()) :: atom()
   def type(event)
 
-  @spec value(__MODULE__.t) :: any()
+  @spec value(__MODULE__.t()) :: any()
   def value(event)
 end

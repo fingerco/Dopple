@@ -21,9 +21,10 @@ defmodule Dopple.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      { :gen_stage, "~> 1.1"},
-      { :uuid, "~> 1.1" },
-      { :httpoison, "~> 1.8" }
+      {:gen_stage, "~> 1.1"},
+      {:uuid, "~> 1.1"},
+      {:httpoison, "~> 1.8"},
+      {:mox, "~> 0.5", only: [:test, :dev]}
     ]
   end
 end

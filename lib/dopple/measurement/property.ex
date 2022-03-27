@@ -3,7 +3,7 @@ defmodule Dopple.Measurement.Property do
   alias Dopple.{Schedule, Target, Receipt}
 
   @enforce_keys [:stage]
-  defstruct     [:stage, schedules: [], targets: [], id: UUID.uuid4]
+  defstruct [:stage, schedules: [], targets: [], id: UUID.uuid4()]
   @type t() :: %__MODULE__{stage: GenStage.stage()}
 
   def new(property) do
@@ -16,10 +16,11 @@ defmodule Dopple.Measurement.Property do
   end
 
   def init(property) do
-    {:producer_consumer, %{
-      property: property,
-      targets: []
-    }}
+    {:producer_consumer,
+     %{
+       property: property,
+       targets: []
+     }}
   end
 
   def handle_cast({:target, target}, %{targets: targets} = state) do
@@ -27,14 +28,16 @@ defmodule Dopple.Measurement.Property do
   end
 
   def handle_events(events, _from, %{targets: targets, property: prop} = state) do
-    responses = Enum.flat_map(events, fn event ->
-      targets |> Enum.map(fn target ->
-        case Target.respond_to(target, event) do
-          {:ok, receipt} -> Map.fetch(Receipt.payload(receipt), prop)
-          {:error, err} -> {:error, err}
-        end
+    responses =
+      Enum.flat_map(events, fn event ->
+        targets
+        |> Enum.map(fn target ->
+          case Target.respond_to(target, event) do
+            {:ok, receipt} -> Map.fetch(Receipt.payload(receipt), prop)
+            {:error, err} -> {:error, err}
+          end
+        end)
       end)
-    end)
 
     {:noreply, responses, state}
   end

@@ -2,7 +2,7 @@ defmodule Dopple.Receipt.Http do
   alias Dopple.Receipt
 
   @enforce_keys [:status, :body]
-  defstruct     [:status, :body, id: UUID.uuid4]
+  defstruct [:status, :body, id: UUID.uuid4()]
 
   def new(status: status, body: body) do
     %__MODULE__{status: status, body: body}
