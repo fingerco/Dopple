@@ -52,7 +52,7 @@ jobs:
           branch: ${{ github.head_ref }}
       
       - name: Retrieve PLT Cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         id: plt-cache
         with:
           path: priv/plts
