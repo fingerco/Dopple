@@ -70,7 +70,7 @@ jobs:
           LEVEL: warning
           REPORTER: local
         run: |
-          mix credo suggest --strict --format=flycheck | reviewdog -efm="%f:%l:%c: %t: %m" -efm="%f:%l: %t: %m" -name="credo" -reporter="${REPORTER:-'github-pr-check'}" -level="${LEVEL}"
+          mix credo suggest --strict --format=flycheck | reviewdog -efm="%f:%l:%c: %t: %m" -efm="%f:%l: %t: %m" -name="credo" -reporter="${REPORTER:-'github-pr-check'}" -level="${LEVEL}" --diff="git diff main"
           mix dialyzer --no-check --halt-exit-status
 
   deploy:
