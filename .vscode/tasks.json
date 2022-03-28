@@ -7,6 +7,11 @@
             "label": "mix test",
             "type": "shell",
             "command": "mix test"
+        },
+        {
+            "label": "mix - Check types and formatting",
+            "type": "shell",
+            "command": "mix dialyzer && mix credo --strict"
         }
     ]
 }

@@ -3,7 +3,7 @@ defprotocol Dopple.Aggregator do
     A mechanism that listens to a set of measurements in order to act on the results
   """
 
-  @spec add_measurement(__MODULE__.t(), Measurement.t()) :: {:ok, __MODULE__.t()} | {:error, any}
+  @spec add_measurement(__MODULE__.t(), Measurement) :: {:ok, __MODULE__.t()} | {:error, any}
   def add_measurement(agg, measurement)
 
   @spec consumer(__MODULE__.t()) :: {:ok, GenStage.stage()} | {:error, any}
