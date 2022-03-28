@@ -3,6 +3,8 @@ defprotocol Dopple.Target do
     A resource that the system will periodically ping, to receive measurements
   """
 
-  @spec respond_to(__MODULE__.t(), Event) :: {:ok, Receipt} | {:error, any}
-  def respond_to(target, event)
+  alias Dopple.Receipt
+
+  @spec ping(__MODULE__, Event) :: {:ok, Receipt.t()} | {:error, any}
+  def ping(target, event)
 end
