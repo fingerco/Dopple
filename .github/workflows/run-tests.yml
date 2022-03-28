@@ -95,7 +95,7 @@ jobs:
           otp-version: ${{ matrix.otp }}
           elixir-version: ${{ matrix.elixir }}
           experimental-otp: true
-      - run:
+      - run: |
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
