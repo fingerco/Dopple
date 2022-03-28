@@ -70,13 +70,13 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mix credo suggest --strict --format=flycheck | reviewdog -efm="%f:%l:%c: %t: %m" -efm="%f:%l: %t: %m" -name="credo" -reporter="local" -level="error" --diff="git diff"
-          mix dialyzer --no-check --halt-exit-status
+          mix dialyzer
 
       - name: Run Credo and Dialyzer (Non-PR)
         if: github.event_name != 'pull_request'
         run: |
           mix credo suggest --strict
-          mix dialyzer --no-check --halt-exit-status
+          mix dialyzer
 
   deploy:
     if: github.event_name == 'release'
