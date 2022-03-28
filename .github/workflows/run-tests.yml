@@ -98,6 +98,15 @@ jobs:
           otp-version: ${{ matrix.otp }}
           elixir-version: ${{ matrix.elixir }}
           experimental-otp: true
+      - name: Replace version in mix.exs
+        run: |
+          export RELEASE_VERSION=${GITHUB_REF#refs/*/}
+          sed -i "s/version: \"(.+?)\"/version: \"$RELEASE_VERSION\"/g" mix.exs
+      - name: Commit Version Changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Version bump (automated on release)
+          branch: ${{ github.head_ref }}
       - run: |
           mix local.rebar --force
           mix local.hex --force
