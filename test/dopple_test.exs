@@ -17,6 +17,6 @@ defmodule DoppleTest do
       :timer.sleep(500)
     end
 
-    assert_received {:ok, receipt}
+    assert_received {:ok, _receipt}
   end
 end
