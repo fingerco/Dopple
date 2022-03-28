@@ -37,7 +37,7 @@ defmodule Dopple.Measurement.Property do
       event_targets
       |> Enum.map(fn {event, target} ->
         case Target.ping(target, event) do
-          {:ok, receipt} -> receipt
+          {:ok, receipt} -> {:ok, receipt}
           {:error, err} -> {:error, err}
         end
       end)

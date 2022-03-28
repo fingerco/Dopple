@@ -17,6 +17,6 @@ defmodule DoppleTest do
       :timer.sleep(500)
     end
 
-    assert_received {:error, %HTTPoison.Error{id: nil, reason: :econnrefused}}
+    assert_received {:ok, receipt}
   end
 end
