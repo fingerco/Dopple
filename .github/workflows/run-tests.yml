@@ -64,7 +64,8 @@ jobs:
           mkdir -p priv/plts
           mix dialyzer --plt
 
-      - name: Run Credo and Dialyzer
+      - name: Run Credo and Dialyzer (PR Review)
+        if: github.event_name == 'pull_request'
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LEVEL: warning
@@ -73,8 +74,14 @@ jobs:
           mix credo suggest --strict --format=flycheck | reviewdog -efm="%f:%l:%c: %t: %m" -efm="%f:%l: %t: %m" -name="credo" -reporter="${REPORTER:-'github-pr-check'}" -level="${LEVEL}" --diff="git diff main"
           mix dialyzer --no-check --halt-exit-status
 
+      - name: Run Credo and Dialyzer (Non-PR)
+        if: github.event_name != 'pull_request'
+        run: |
+          mix credo suggest --strict
+          mix dialyzer --no-check --halt-exit-status
+
   deploy:
-    if: github.event.action == 'release'
+    if: github.event_name == 'release'
     needs: test
     environment: HEX_DEPLOY_API
     runs-on: ubuntu-latest
