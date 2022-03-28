@@ -3,7 +3,7 @@ defmodule Dopple.Measurement.Property do
     A measurement that retrieves a property of a response object
   """
   use GenStage
-  alias Dopple.{Target, Schedule}
+  alias Dopple.{Schedule, Target}
 
   @enforce_keys [:stage]
   defstruct [:stage, schedules: [], targets: [], id: UUID.uuid4()]
