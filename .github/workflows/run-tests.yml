@@ -51,6 +51,9 @@ jobs:
           commit_message: Formatting changes (Automated `mix format`)
           branch: ${{ github.head_ref }}
       
+      - name: Check docs generation
+        run: mix docs
+      
       - name: Retrieve PLT Cache
         uses: actions/cache@v3
         id: plt-cache
