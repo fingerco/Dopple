@@ -66,7 +66,7 @@ jobs:
 
       - name: Run Credo and Dialyzer
         if: github.event.action == 'push'
-        run:
+        run: |
           mix credo suggest --strict
           mix dialyzer --no-check --halt-exit-status
 
@@ -76,7 +76,7 @@ jobs:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LEVEL: warning
           REPORTER: local
-        run:
+        run: |
           mix credo suggest --strict --format=flycheck | reviewdog -efm="%f:%l:%c: %t: %m" -efm="%f:%l: %t: %m" -name="credo" -reporter="${REPORTER:-'github-pr-check'}" -level="${LEVEL}"
           mix dialyzer --no-check --halt-exit-status
 
