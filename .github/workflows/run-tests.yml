@@ -3,6 +3,8 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  release:
+    types: [published]
 
 jobs:
   test:
@@ -19,6 +21,9 @@ jobs:
           otp-version: ${{ matrix.otp }}
           elixir-version: ${{ matrix.elixir }}
           experimental-otp: true
+      - uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: latest
       - name: Retrieve Mix Dependencies Cache
         uses: actions/cache@v1
         id: mix-cache
@@ -39,10 +44,13 @@ jobs:
           mix deps.get
           mix deps.compile
       - run: mix test
-      - run: mix credo --strict
-      - if: github.ref_type == 'tag'
-        run: mix format --check-formatted
-          mix hex.build
+      - run: mix format
+      - name: Commit Format Changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply formatting changes
+          branch: ${{ github.head_ref }}
+      
       - name: Retrieve PLT Cache
         uses: actions/cache@v1
         id: plt-cache
@@ -56,10 +64,43 @@ jobs:
           mkdir -p priv/plts
           mix dialyzer --plt
 
-      - name: Run dialyzer
-        run: mix dialyzer --no-check --halt-exit-status
-
-      - if: github.ref_type == 'tag'
+      - name: Run Credo and Dialyzer
+        if: github.event.action == 'push'
         run:
+          mix credo suggest --strict
+          mix dialyzer --no-check --halt-exit-status
+
+      - name: Run Credo and Dialyzer
+        if: github.event.action == 'pull_request'
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LEVEL: warning
+          REPORTER: local
+        run:
+          mix credo suggest --strict --format=flycheck | reviewdog -efm="%f:%l:%c: %t: %m" -efm="%f:%l: %t: %m" -name="credo" -reporter="${REPORTER:-'github-pr-check'}" -level="${LEVEL}"
+          mix dialyzer --no-check --halt-exit-status
+
+  deploy:
+    if: github.event.action == 'release'
+    needs: test
+    environment: HEX_DEPLOY_API
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir: [1.13.2]
+        otp: [24]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1
+        with:
+          otp-version: ${{ matrix.otp }}
+          elixir-version: ${{ matrix.elixir }}
+          experimental-otp: true
+      - run:
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
           mix hex.build
           mix hex.publish --yes
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
