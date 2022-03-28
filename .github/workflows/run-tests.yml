@@ -65,13 +65,6 @@ jobs:
           mix dialyzer --plt
 
       - name: Run Credo and Dialyzer
-        if: github.event.action == 'push'
-        run: |
-          mix credo suggest --strict
-          mix dialyzer --no-check --halt-exit-status
-
-      - name: Run Credo and Dialyzer
-        if: github.event.action == 'pull_request'
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LEVEL: warning
